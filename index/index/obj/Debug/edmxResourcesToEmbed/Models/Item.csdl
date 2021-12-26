@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="itemdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Item">
+    <Key>
+      <PropertyRef Name="item_id" />
+    </Key>
+    <Property Name="item_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="item_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="display_sequence_number" Type="Int32" />
+    <Property Name="is_active" Type="Boolean" />
+    <Property Name="is_deleted" Type="Boolean" />
+    <Property Name="created_date" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="SubItems" Relationship="Self.FK_SubItem_Item" FromRole="Item" ToRole="SubItem" />
+    <Property Name="image_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="image_path" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="SubItem">
+    <Key>
+      <PropertyRef Name="sub_id" />
+    </Key>
+    <Property Name="sub_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="item_id" Type="Int64" />
+    <Property Name="sub_item_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="price" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="is_deleted" Type="Boolean" />
+    <Property Name="is_active" Type="Boolean" />
+    <NavigationProperty Name="Item" Relationship="Self.FK_SubItem_Item" FromRole="SubItem" ToRole="Item" />
+  </EntityType>
+  <Association Name="FK_SubItem_Item">
+    <End Role="Item" Type="Self.Item" Multiplicity="0..1" />
+    <End Role="SubItem" Type="Self.SubItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Item">
+        <PropertyRef Name="item_id" />
+      </Principal>
+      <Dependent Role="SubItem">
+        <PropertyRef Name="item_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="itemdbEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Items" EntityType="Self.Item" />
+    <EntitySet Name="SubItems" EntityType="Self.SubItem" />
+    <AssociationSet Name="FK_SubItem_Item" Association="Self.FK_SubItem_Item">
+      <End Role="Item" EntitySet="Items" />
+      <End Role="SubItem" EntitySet="SubItems" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

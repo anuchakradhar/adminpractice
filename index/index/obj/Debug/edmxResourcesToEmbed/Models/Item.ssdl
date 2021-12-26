@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="itemdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Item">
+    <Key>
+      <PropertyRef Name="item_id" />
+    </Key>
+    <Property Name="item_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="item_name" Type="varchar" MaxLength="50" />
+    <Property Name="display_sequence_number" Type="int" />
+    <Property Name="is_active" Type="bit" />
+    <Property Name="is_deleted" Type="bit" />
+    <Property Name="created_date" Type="datetime" />
+    <Property Name="image_name" Type="varchar" MaxLength="100" />
+    <Property Name="image_path" Type="varchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="SubItem">
+    <Key>
+      <PropertyRef Name="sub_id" />
+    </Key>
+    <Property Name="sub_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="item_id" Type="bigint" />
+    <Property Name="sub_item_name" Type="varchar" MaxLength="50" />
+    <Property Name="description" Type="varchar" MaxLength="100" />
+    <Property Name="price" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="is_deleted" Type="bit" />
+    <Property Name="is_active" Type="bit" />
+  </EntityType>
+  <Association Name="FK_SubItem_Item">
+    <End Role="Item" Type="Self.Item" Multiplicity="0..1" />
+    <End Role="SubItem" Type="Self.SubItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Item">
+        <PropertyRef Name="item_id" />
+      </Principal>
+      <Dependent Role="SubItem">
+        <PropertyRef Name="item_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="itemdbModelStoreContainer">
+    <EntitySet Name="Item" EntityType="Self.Item" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SubItem" EntityType="Self.SubItem" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_SubItem_Item" Association="Self.FK_SubItem_Item">
+      <End Role="Item" EntitySet="Item" />
+      <End Role="SubItem" EntitySet="SubItem" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

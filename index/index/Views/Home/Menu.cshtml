@@ -1,0 +1,57 @@
+﻿@model IEnumerable<index.Models.Item>
+
+@{
+    ViewBag.Title = "Menu";
+}
+
+<body class="sub_page">
+
+    <section class="food_section layout_padding">
+        <div class="container">
+            <div class="heading_container heading_center">
+                <h1>
+                    Our Items
+                </h1>
+            </div>
+
+            <div class="filters-content">
+                <div class="row grid">
+
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-sm-6 col-lg-4">
+                            <a href=@Url.Action("SubItemList", "Home", new { id = item.item_id })>
+                                <div class="box">
+                                    <div>
+                                        <div class="img-box">
+                                            @if (item.image_name != null && item.image_path != null)
+                                            {
+                                                <img src="@Url.Content(item.image_path+ item.image_name)" alt="" />
+                                            }
+                                            else
+                                            {
+                                                <img src = "@Url.Content("~/assests/images/f3.png")" />
+                                            }
+                                            </div>
+                                        <div class="detail-box">
+                                            <h5>
+                                                @item.item_name
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                            
+                        </div>
+                    }
+                </div>
+            </div>
+
+                    <div class="btn-box">
+                        <a href="">
+                            View More
+                        </a>
+                    </div>
+                </div>
+    </section>
+</body>

@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="itemdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="item_id" />
+          </Key>
+          <Property Name="item_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="item_name" Type="varchar" MaxLength="50" />
+          <Property Name="display_sequence_number" Type="int" />
+          <Property Name="is_active" Type="bit" />
+          <Property Name="is_deleted" Type="bit" />
+          <Property Name="created_date" Type="datetime" />
+          <Property Name="image_name" Type="varchar" MaxLength="100" />
+          <Property Name="image_path" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="SubItem">
+          <Key>
+            <PropertyRef Name="sub_id" />
+          </Key>
+          <Property Name="sub_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="item_id" Type="bigint" />
+          <Property Name="sub_item_name" Type="varchar" MaxLength="50" />
+          <Property Name="description" Type="varchar" MaxLength="100" />
+          <Property Name="price" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="is_deleted" Type="bit" />
+          <Property Name="is_active" Type="bit" />
+        </EntityType>
+        <Association Name="FK_SubItem_Item">
+          <End Role="Item" Type="Self.Item" Multiplicity="0..1" />
+          <End Role="SubItem" Type="Self.SubItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="item_id" />
+            </Principal>
+            <Dependent Role="SubItem">
+              <PropertyRef Name="item_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="itemdbModelStoreContainer">
+          <EntitySet Name="Item" EntityType="Self.Item" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SubItem" EntityType="Self.SubItem" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_SubItem_Item" Association="Self.FK_SubItem_Item">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="SubItem" EntitySet="SubItem" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="itemdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="item_id" />
+          </Key>
+          <Property Name="item_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="item_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="display_sequence_number" Type="Int32" />
+          <Property Name="is_active" Type="Boolean" />
+          <Property Name="is_deleted" Type="Boolean" />
+          <Property Name="created_date" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="SubItems" Relationship="Self.FK_SubItem_Item" FromRole="Item" ToRole="SubItem" />
+          <Property Name="image_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="image_path" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SubItem">
+          <Key>
+            <PropertyRef Name="sub_id" />
+          </Key>
+          <Property Name="sub_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="item_id" Type="Int64" />
+          <Property Name="sub_item_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="price" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="is_deleted" Type="Boolean" />
+          <Property Name="is_active" Type="Boolean" />
+          <NavigationProperty Name="Item" Relationship="Self.FK_SubItem_Item" FromRole="SubItem" ToRole="Item" />
+        </EntityType>
+        <Association Name="FK_SubItem_Item">
+          <End Role="Item" Type="Self.Item" Multiplicity="0..1" />
+          <End Role="SubItem" Type="Self.SubItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="item_id" />
+            </Principal>
+            <Dependent Role="SubItem">
+              <PropertyRef Name="item_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="itemdbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Items" EntityType="Self.Item" />
+          <EntitySet Name="SubItems" EntityType="Self.SubItem" />
+          <AssociationSet Name="FK_SubItem_Item" Association="Self.FK_SubItem_Item">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="SubItem" EntitySet="SubItems" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="itemdbModelStoreContainer" CdmEntityContainer="itemdbEntities">
+          <EntitySetMapping Name="Items">
+            <EntityTypeMapping TypeName="itemdbModel.Item">
+              <MappingFragment StoreEntitySet="Item">
+                <ScalarProperty Name="image_path" ColumnName="image_path" />
+                <ScalarProperty Name="image_name" ColumnName="image_name" />
+                <ScalarProperty Name="item_id" ColumnName="item_id" />
+                <ScalarProperty Name="item_name" ColumnName="item_name" />
+                <ScalarProperty Name="display_sequence_number" ColumnName="display_sequence_number" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+                <ScalarProperty Name="is_deleted" ColumnName="is_deleted" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SubItems">
+            <EntityTypeMapping TypeName="itemdbModel.SubItem">
+              <MappingFragment StoreEntitySet="SubItem">
+                <ScalarProperty Name="sub_id" ColumnName="sub_id" />
+                <ScalarProperty Name="item_id" ColumnName="item_id" />
+                <ScalarProperty Name="sub_item_name" ColumnName="sub_item_name" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="is_deleted" ColumnName="is_deleted" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

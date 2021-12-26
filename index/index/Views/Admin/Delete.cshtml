@@ -1,0 +1,66 @@
+﻿@model index.Models.Item
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/admin_layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this item?</h3>
+<div>
+    <h4>Item</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.item_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.item_name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.display_sequence_number)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.display_sequence_number)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.is_active)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.is_active)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.is_deleted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.is_deleted)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.created_date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.created_date)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm("DeleteItem", "Admin", FormMethod.Post)) {
+        @Html.AntiForgeryToken()
+
+    <div class="form-actions no-color">
+        @Html.HiddenFor(model => model.item_id)
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+    }
+</div>

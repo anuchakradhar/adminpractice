@@ -1,0 +1,40 @@
+﻿@model IEnumerable<index.Models.SubItem>
+@{
+    ViewBag.Title = "SubItem";
+    Layout = "~/Views/Shared/admin_layout.cshtml";
+}
+
+<h2>SubItem</h2>
+
+<a href=@Url.Action("AddSubItem", "Admin")>Add Sub Item</a>
+
+<table class="table table-striped">
+    <tr>
+        <td>SubItem Id</td>
+        <td>Item Name</td>
+        <td>SubItem Name </td>
+        <td>Description</td>
+        <td>Price</td>
+        <td>Is Active</td>
+        <td>Is Deleted</td>
+
+
+    </tr>
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>@item.sub_id</td>
+        <td>@item.Item.item_name</td>
+        <td>@item.sub_item_name</td>
+        <td>@item.description</td>
+        <td>@item.price</td>
+        <td>@item.is_active</td>
+        <td>@item.is_deleted</td>
+        <td>
+            @Html.ActionLink("Edit", "EditSubItem", new { id = item.sub_id })
+            @Html.ActionLink("Delete", "DeleteSubItem", new { id = item.sub_id })
+        </td>
+    </tr>
+
+    }
+</table>

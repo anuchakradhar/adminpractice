@@ -1,0 +1,36 @@
+﻿@model IEnumerable<index.Models.Item>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/admin_layout.cshtml";
+}
+
+        <h2>Items</h2>
+
+        <table class="table table-striped">
+            <tr>
+                <td>Item id</td>
+                <td>Item Name </td>
+                <td>IsActive</td>
+                <td>IsDeleted</td>
+                <td>Created Date</td>
+                <td>Display Sequence Number</td>
+
+
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.item_id</td>
+                    <td>@item.item_name</td>
+                    <td>@item.is_active</td>
+                    <td>@item.is_deleted</td>
+                    <td>@item.created_date</td>
+                    <td>@item.display_sequence_number</td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.item_id })
+                        @Html.ActionLink("Delete", "Delete", new { id = item.item_id })
+                    </td>
+                </tr>
+
+            }
+        </table>
